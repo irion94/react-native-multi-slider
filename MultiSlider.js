@@ -408,37 +408,35 @@ class MultiSlider extends React.Component<Props, State> {
         onLayout={this.onContainerLayout}
       >
         <View style={[styles.fullTrack, { width: sliderLength }]}>
-          this.props.gradientWrapper ? this.props.gradientWrapper(
-          <View
-              style={[
-                styles.track,
-                this.props.trackStyle,
-                trackOneStyle,
-                { width: trackOneLength},
-              ]}
-          />
-
-          ) :
-          <View
-              style={[
-                styles.track,
-                this.props.trackStyle,
-                trackOneStyle,
-                { width: trackOneLength },
-              ]}
-          />
-          }
           {
-            this.props.gradientWrapper ? this.props.gradientWrapper(
+            this.props.gradientWrapper ? this.props.gradientWrapper(<View
+                    style={[
+                      styles.track,
+                      this.props.trackStyle,
+                      trackOneStyle,
+                      { width: trackOneLength },
+                    ]}
+                />) :
                 <View
                     style={[
                       styles.track,
                       this.props.trackStyle,
-                      trackTwoStyle,
-                      { width: trackTwoLength},
+                      trackOneStyle,
+                      { width: trackOneLength },
                     ]}
                 />
-                ) :
+
+
+          }
+          {
+            this.props.gradientWrapper ? this.props.gradientWrapper(<View
+                    style={[
+                      styles.track,
+                      this.props.trackStyle,
+                      trackTwoStyle,
+                      { width: trackTwoLength },
+                    ]}
+                />) :
                 <View
                     style={[
                       styles.track,
