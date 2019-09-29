@@ -142,53 +142,44 @@ class MultiSlider extends React.Component<Props, State> {
     );
   }
 
-  /*  componentDidUpdate(prevProps) {
-    if (this.state.onePressed || this.state.twoPressed) {
-      return;
-    }
+  static getDerivedStateFromProps(props, state) {
+    if(props.values[0] !== state.valueOne || props.values[1] !== state.valueTwo ){
 
-    let nextState = {};
-    if (
-      nextProps.min !== this.props.min ||
-      nextProps.max !== this.props.max ||
-      nextProps.values[0] !== this.state.valueOne ||
-      nextProps.sliderLength !== this.props.sliderLength ||
-      nextProps.values[1] !== this.state.valueTwo ||
-      (nextProps.sliderLength !== this.props.sliderLength &&
-        nextProps.values[1])
-    ) {
-      this.optionsArray =
-        this.props.optionsArray ||
-        createArray(nextProps.min, nextProps.max, nextProps.step);
+      const optionsArray =
+          props.optionsArray ||
+          createArray(props.min, props.max, props.step);
+      const stepLength = props.sliderLength / optionsArray.length;
 
-      this.stepLength = this.props.sliderLength / this.optionsArray.length;
-
-      var positionOne = valueToPosition(
-        nextProps.values[0],
-        this.optionsArray,
-        nextProps.sliderLength,
+      const initialValues = props.values.map(value =>
+          valueToPosition(value, optionsArray, props.sliderLength),
       );
 
-      nextState.valueOne = nextProps.values[0];
-      nextState.pastOne = positionOne;
-      nextState.positionOne = positionOne;
+      let updatedValues;
 
-      var positionTwo = valueToPosition(
-        nextProps.values[1],
-        this.optionsArray,
-        nextProps.sliderLength,
-      );
-      nextState.valueTwo = nextProps.values[1];
-      nextState.pastTwo = positionTwo;
-      nextState.positionTwo = positionTwo;
+      updatedValues = props.values[0] && {
+        valueOne: props.values[0],
+        pastOne: initialValues[0],
+        positionOne: initialValues[0],
+      };
+
+      updatedValues = props.values[1] && {
+        ...updatedValues,
+        valueTwo: props.values[1],
+        pastTwo: initialValues[1],
+        positionTwo: initialValues[1],
+      };
+
+      return ({
+        ...state,
+        ...updatedValues,
+      })
     }
+    else return ({...state})
+  }
 
-    if (nextState != {}) {
-      this.setState(nextState);
-    }
-  }*/
 
-  startOne = (): void => {
+
+  startOne = () => {
     if (this.props.enabledOne) {
       this.props.onValuesChangeStart();
       this.setState({
