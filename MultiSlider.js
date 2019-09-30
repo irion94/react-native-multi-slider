@@ -142,16 +142,25 @@ class MultiSlider extends React.Component<Props, State> {
     );
   }
 
+  componentDidMount() {
+    this.optionsArray =
+        this.props.optionsArray ||
+        createArray(this.props.min, this.props.max, this.props.step);
+    this.stepLength = this.props.sliderLength / this.optionsArray.length;
+  }
+
   static getDerivedStateFromProps(props, state) {
+    if(props.enabledTwo) return {...state};
+
+    this.optionsArray =
+        props.optionsArray ||
+        createArray(props.min, props.max, props.step);
+    this.stepLength = props.sliderLength / optionsArray.length;
+
     if(props.values[0] !== state.valueOne || props.values[1] !== state.valueTwo ){
 
-      const optionsArray =
-          props.optionsArray ||
-          createArray(props.min, props.max, props.step);
-      const stepLength = props.sliderLength / optionsArray.length;
-
       const initialValues = props.values.map(value =>
-          valueToPosition(value, optionsArray, props.sliderLength),
+          valueToPosition(value, this.optionsArray, props.sliderLength),
       );
 
       let updatedValues;
@@ -160,15 +169,14 @@ class MultiSlider extends React.Component<Props, State> {
         valueOne: props.values[0],
         pastOne: initialValues[0],
         positionOne: initialValues[0],
-      };
+      }
 
       updatedValues = props.values[1] && {
         ...updatedValues,
         valueTwo: props.values[1],
         pastTwo: initialValues[1],
         positionTwo: initialValues[1],
-      };
-
+      }
       return ({
         ...state,
         ...updatedValues,
